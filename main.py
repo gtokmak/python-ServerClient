@@ -23,13 +23,12 @@ connections =[]
 def handler(clientSocket, address):
     global connections
     while True:
-        data = clientSocket.recv(1024)
-        # for connection in connections:
-        #     #connection.send(bytes(data))
-        #     time.sleep(0.1)
-
-        clientSocket.send(bytes("Welcome to server!\r\n", "utf-8"))
-        print(data.decode("utf-8"))
+        data = clientSocket.recv(1024).decode("utf-8")
+        if data == "openBarrier":
+            clientSocket.send(bytes("The barrier is opened.", "utf-8"))
+        if data == "closeBarrier":
+            clientSocket.send(bytes("The barrier is closed.", "utf-8"))
+        print(data)
         if not data:
             connections.remove(clientSocket)
             print(f'close connection {clientSocket}')
@@ -45,7 +44,7 @@ def print_info(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_info(f'Soket uygulamasi IP:{HOST}, PORT:{PORT} ile basladi')
+    print_info(f'Soket uygulamasi IP:{HOST}, PORT:{PORT}')
     while True:
         clientSocket, address = sock.accept()
         cThread = threading.Thread(target=handler, args=(clientSocket, address))
