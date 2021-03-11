@@ -6,13 +6,17 @@ HOST = '0.0.0.0'
 PORT = 7777
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#socket.AF_INET IPv4
-#socket.AF_INET6 IPv6
-#socket.SOCK_STREAM TcpIp
-#socket.SOCK_DGRAM UDP
+# AF_UNIX: UNIX domain protokolleri
+# AF_INET: TCP ve UDP için IPv4 protokolleri
+# AF_INET6: TCP ve UDP için IPv6 protokolleri
+# SOCK_STREAM: TCP bağlantı tipi
+# SOCK_DGRAM: UDP bağlantı tipi
+# SOCK_RAW: Henüz olgunlaşmamış soketler
+# SOCK_RDM: Güvenilir datagramlar için
+# SOCK_SEQPACKET: Bağlantı üzerinden kayıtlar için bir dizi transfer.
 
 sock.bind((socket.gethostname(), PORT))
-sock.listen(1)
+sock.listen(3) # aynı anda en fazla bağlantıya verilecek sayı
 connections =[]
 
 
@@ -20,10 +24,12 @@ def handler(clientSocket, address):
     global connections
     while True:
         data = clientSocket.recv(1024)
-        for connection in connections:
-            #connection.send(bytes(data))
-            time.sleep(0.1)
-            connection.send(bytes("Welcome to server!\r\n", "utf-8"))
+        # for connection in connections:
+        #     #connection.send(bytes(data))
+        #     time.sleep(0.1)
+
+        clientSocket.send(bytes("Welcome to server!\r\n", "utf-8"))
+        print(data.decode("utf-8"))
         if not data:
             connections.remove(clientSocket)
             print(f'close connection {clientSocket}')
