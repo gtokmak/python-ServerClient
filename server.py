@@ -2,7 +2,7 @@ import time
 import socket
 import threading
 
-HOST = '0.0.0.0'
+HOST = "127.0.0.1"
 PORT = 7777
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,7 +15,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # SOCK_RDM: Güvenilir datagramlar için
 # SOCK_SEQPACKET: Bağlantı üzerinden kayıtlar için bir dizi transfer.
 
-sock.bind((socket.gethostname(), PORT))
+sock.bind((HOST, PORT))
 sock.listen(3) # aynı anda en fazla bağlantıya verilecek sayı
 connections =[]
 
